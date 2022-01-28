@@ -14,4 +14,5 @@ module "checks" {
   alert_threshold_duration = var.alert_threshold_duration
   alert_notification_channels = var.alert_notification_channels
   gcp_project = var.gcp_project
+  auth_credentials = var.auth_credentials
 }

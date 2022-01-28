@@ -50,6 +50,14 @@ resource "google_monitoring_uptime_check_config" "https_uptime" {
     port = "443"
     use_ssl = true
     validate_ssl = true
+
+    dynamic "auth_info" {
+      for_each = var.auth_credentials
+      content {
+        username = auth_info.key
+        password = auth_info.value
+      }
+    }
   }
 
   monitored_resource {
