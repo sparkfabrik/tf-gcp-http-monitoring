@@ -28,9 +28,19 @@ variable "uptime_monitoring_host" {
   description = "The hostname to monitor (without protocol, example: www.my-site.com)."
 }
 
+variable "uptime_check_regions" {
+  type        = list(string)
+  description = "The list of regions from which the check will be run. Some regions contain one location, and others contain more than one. If this field is specified, enough regions to include a minimum of 3 locations must be provided, or an error message is returned. Not specifying this field will result in uptime checks running from all regions."
+}
+
 variable "alert_threshold_duration" {
   type        = string
   description = "The amount of time that a time series must violate the threshold to be considered failing. Currently, only values that are a multiple of a minute--e.g., 0, 60, 120, or 300 seconds--are supported."
+}
+
+variable "alert_threshold_value" {
+  type        = number
+  description = "A value against which to compare the time series."
 }
 
 variable "alert_notification_channels" {
