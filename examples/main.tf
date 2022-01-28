@@ -27,7 +27,7 @@ resource "google_monitoring_notification_channel" "cloud_support_email" {
 }
 
 resource "google_monitoring_notification_channel" "dev_support_email" {
-  display_name = "Email cloud support"
+  display_name = "Email developers support"
   type         = "email"
   labels = {
     email_address = "dev-support@acme.com"
