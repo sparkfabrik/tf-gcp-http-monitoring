@@ -1,6 +1,5 @@
 locals {
   gcp_project = "project_id"
-  gcp_region = "europe-west1"
   hosts_list = [
     "www.acme-site.it",
     "www2.acme-site.it",
@@ -42,7 +41,6 @@ module "gcp-http-monitoring" {
   for_each = toset(local.hosts_list)
   uptime_monitoring_host = each.value
   gcp_project = local.gcp_project
-  gcp_region = local.gcp_region
   alert_threshold_duration = "300s"
   alert_notification_channels = local.notification_channels
   uptime_monitoring_path = local.uptime_monitoring_path

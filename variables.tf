@@ -3,11 +3,6 @@ variable "gcp_project" {
   description = "The Google Cloud project ID."
 }
 
-variable "gcp_region" {
-  type        = string
-  description = "The Google Cloud project region."
-}
-
 variable "uptime_monitoring_display_name" {
   type        = string
   description = "A human-friendly name for the uptime check configuration. Used for monitoring display_name."
