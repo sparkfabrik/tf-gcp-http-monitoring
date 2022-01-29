@@ -32,9 +32,9 @@ variable "uptime_check_timeout" {
   default     = "10s"
 }
 
-variable "uptime_monitoring_hosts" {
-  type        = list(string)
-  description = "A list with the hostnames to monitor (without protocol, example: ['www.my-site.com','www.your-site.com'])."
+variable "uptime_monitoring_host" {
+  type        = string
+  description = "A hostname to monitor (without protocol, example: 'www.my-site.com')."
 }
 
 variable "uptime_check_regions" {
