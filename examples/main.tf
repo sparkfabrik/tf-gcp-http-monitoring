@@ -1,6 +1,5 @@
 locals {
   gcp_project = "project_id"
-  gcp_region = "europe-west1"
   hosts_list = [
     "www.acme-site.it",
     "www2.acme-site.it",
@@ -11,7 +10,6 @@ locals {
     google_monitoring_notification_channel.cloud_support_email.name,
     google_monitoring_notification_channel.dev_support_email.name,
   ]
-  uptime_monitoring_path = "/healthz"
 }
 
 
@@ -38,13 +36,13 @@ resource "google_monitoring_notification_channel" "dev_support_email" {
 
 module "gcp-http-monitoring" {
   source  = "sparkfabrik/gcp-http-monitoring/sparkfabrik"
-  version = "0.1.2"
+  version = "~>0.3"
+  for_each = toset(local.hosts_list)
+  uptime_monitoring_host = each.value
   gcp_project = local.gcp_project
-  gcp_region = local.gcp_region
-  uptime_monitoring_hosts = local.hosts_list
   alert_threshold_duration = "300s"
   alert_notification_channels = local.notification_channels
-  uptime_monitoring_path = local.uptime_monitoring_path
+  uptime_monitoring_path = var.monitoring_path
   auth_credentials = {
     var.basic_auth_user = var.basic_auth_password
   }

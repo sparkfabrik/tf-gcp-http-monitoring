@@ -3,11 +3,6 @@ variable "gcp_project" {
   description = "The Google Cloud project ID."
 }
 
-variable "gcp_region" {
-  type        = string
-  description = "The Google Cloud project region."
-}
-
 variable "uptime_monitoring_display_name" {
   type        = string
   description = "A human-friendly name for the uptime check configuration. Used for monitoring display_name."
@@ -32,9 +27,9 @@ variable "uptime_check_timeout" {
   default     = "10s"
 }
 
-variable "uptime_monitoring_hosts" {
-  type        = list(string)
-  description = "A list with the hostnames to monitor (without protocol, example: ['www.my-site.com','www.your-site.com'])."
+variable "uptime_monitoring_host" {
+  type        = string
+  description = "A hostname to monitor (without protocol, example: 'www.my-site.com')."
 }
 
 variable "uptime_check_regions" {

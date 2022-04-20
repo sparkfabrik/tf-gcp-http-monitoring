@@ -1,0 +1,1 @@
+monitoring_path = "/healthz"
