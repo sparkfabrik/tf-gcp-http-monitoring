@@ -10,7 +10,6 @@ locals {
     google_monitoring_notification_channel.cloud_support_email.name,
     google_monitoring_notification_channel.dev_support_email.name,
   ]
-  uptime_monitoring_path = "/healthz"
 }
 
 
@@ -43,7 +42,7 @@ module "gcp-http-monitoring" {
   gcp_project = local.gcp_project
   alert_threshold_duration = "300s"
   alert_notification_channels = local.notification_channels
-  uptime_monitoring_path = local.uptime_monitoring_path
+  uptime_monitoring_path = var.monitoring_path
   auth_credentials = {
     var.basic_auth_user = var.basic_auth_password
   }
