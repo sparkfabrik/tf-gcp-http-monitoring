@@ -52,10 +52,10 @@ resource "google_monitoring_uptime_check_config" "https_uptime" {
     validate_ssl = true
 
     dynamic "auth_info" {
-      for_each = var.auth_credentials
+      for_each = (length(var.auth_username) > 0 && length(var.auth_password) > 0) ? [1] : []
       content {
-        username = auth_info.key
-        password = auth_info.value
+        username = var.auth_username
+        password = var.auth_password
       }
     }
   }
