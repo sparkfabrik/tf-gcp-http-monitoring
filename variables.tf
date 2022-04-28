@@ -55,8 +55,14 @@ variable "alert_notification_channels" {
   description = "Identifies the notification channels to which notifications should be sent when incidents are opened or closed. The syntax of the entries in this field is projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]"
 }
 
-variable "auth_credentials" {
-  type        = map(string)
-  description = "If your application is behind a basic auth, here you can specify your username and password in the form of {'username' = 'password'}. We recommend to use an env var for you password and do not store it as data plain text in your repo."
-  default     = {}
+variable "auth_username" {
+  type        = string
+  description = "If your application is behind a basic auth, here you can specify your username. We recommend to use an env var for you password and do not store it as data plain text in your repo."
+  default     = ""
+}
+
+variable "auth_password" {
+  type        = string
+  description = "If your application is behind a basic auth, here you can specify your password. We recommend to use an env var for you password and do not store it as data plain text in your repo."
+  default     = ""
 }

@@ -43,7 +43,6 @@ module "gcp-http-monitoring" {
   alert_threshold_duration = "300s"
   alert_notification_channels = local.notification_channels
   uptime_monitoring_path = var.monitoring_path
-  auth_credentials = {
-    var.basic_auth_user = var.basic_auth_password
-  }
+  auth_username = var.basic_auth_user
+  auth_password = var.basic_auth_password
 }
