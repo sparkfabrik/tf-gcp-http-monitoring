@@ -69,4 +69,8 @@ resource "google_monitoring_uptime_check_config" "https_uptime" {
   }
 
   project = var.gcp_project
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
