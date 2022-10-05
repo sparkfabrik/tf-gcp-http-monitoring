@@ -35,7 +35,7 @@ variable "uptime_monitoring_host" {
 variable "uptime_check_regions" {
   type        = list(string)
   description = "The list of regions from which the check will be run. Some regions contain one location, and others contain more than one. If this field is specified, enough regions to include a minimum of 3 locations must be provided, or an error message is returned. Not specifying this field will result in uptime checks running from all regions."
-  default     = ["USA", "EUROPE", "ASIA_PACIFIC"]
+  default     = ["SOUTH_AMERICA", "EUROPE", "ASIA_PACIFIC"]
 }
 
 variable "alert_threshold_duration" {
