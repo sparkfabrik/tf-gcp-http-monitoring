@@ -50,6 +50,12 @@ variable "alert_threshold_value" {
   default     = 2
 }
 
+variable "uptime_alert_user_labels" {
+  type        = map(string)
+  description = "This field is intended to be used for labelling the SSL alerts. Labels and values can contain only lowercase letters, numerals, underscores, and dashes. Keys must begin with a letter."
+  default     = {}
+}
+
 variable "alert_notification_channels" {
   type        = list(string)
   description = "Identifies the notification channels to which notifications should be sent when incidents are opened or closed. The syntax of the entries in this field is projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]"
@@ -71,4 +77,10 @@ variable "ssl_alert_threshold_days" {
   type        = list(number)
   description = "If you configure this list with some numeric values, the module creates alerts for SSL certificate expiration. The values of the list will be used as threshold value in days for the alert."
   default     = []
+}
+
+variable "ssl_alert_user_labels" {
+  type        = map(string)
+  description = "This field is intended to be used for labelling the SSL alerts. Labels and values can contain only lowercase letters, numerals, underscores, and dashes. Keys must begin with a letter."
+  default     = {}
 }

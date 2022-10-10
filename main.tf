@@ -11,7 +11,7 @@ locals {
 resource "google_monitoring_alert_policy" "failure_alert" {
   display_name = "${local.uptime_monitoring_display_name} - Uptime failure"
   combiner     = "OR"
-  user_labels  = {}
+
   conditions {
     condition_threshold {
       filter          = "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" AND metric.label.check_id=\"${google_monitoring_uptime_check_config.https_uptime.uptime_check_id}\" AND resource.type=\"uptime_url\""
@@ -30,6 +30,8 @@ resource "google_monitoring_alert_policy" "failure_alert" {
     }
     display_name = "Failure of uptime check for: ${local.uptime_monitoring_display_name}"
   }
+
+  user_labels = var.uptime_alert_user_labels
 
   notification_channels = var.alert_notification_channels
   project               = var.gcp_project
@@ -104,10 +106,12 @@ resource "google_monitoring_alert_policy" "ssl_expiring_days" {
     display_name = "SSL certificate expiring soon (${each.value} days)"
   }
 
-  user_labels = {
-    version = "1"
-    uptime  = "ssl_cert_expiration"
-  }
+  user_labels = var.ssl_alert_user_labels
 
   notification_channels = var.alert_notification_channels
+  project               = var.gcp_project
+
+  depends_on = [
+    google_monitoring_uptime_check_config.https_uptime
+  ]
 }
