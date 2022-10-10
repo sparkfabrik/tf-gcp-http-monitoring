@@ -66,3 +66,9 @@ variable "auth_password" {
   description = "If your application is behind a basic auth, here you can specify your password. We recommend to use an env var for you password and do not store it as data plain text in your repo."
   default     = ""
 }
+
+variable "ssl_alert_threshold_days" {
+  type        = list(number)
+  description = "If you configure this list with some numeric values, the module creates alerts for SSL certificate expiration. The values of the list will be used as threshold value in days for the alert."
+  default     = []
+}

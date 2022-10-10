@@ -30,8 +30,9 @@ This module is provided without any kind of warranty and is GPL3 licensed.
 | <a name="input_auth_password"></a> [auth\_password](#input\_auth\_password) | If your application is behind a basic auth, here you can specify your password. We recommend to use an env var for you password and do not store it as data plain text in your repo. | `string` | `""` | no |
 | <a name="input_auth_username"></a> [auth\_username](#input\_auth\_username) | If your application is behind a basic auth, here you can specify your username. We recommend to use an env var for you password and do not store it as data plain text in your repo. | `string` | `""` | no |
 | <a name="input_gcp_project"></a> [gcp\_project](#input\_gcp\_project) | The Google Cloud project ID. | `string` | n/a | yes |
+| <a name="input_ssl_alert_threshold_days"></a> [ssl\_alert\_threshold\_days](#input\_ssl\_alert\_threshold\_days) | If you configure this list with some numeric values, the module creates alerts for SSL certificate expiration. The values of the list will be used as threshold value in days for the alert. | `list(number)` | `[]` | no |
 | <a name="input_uptime_check_period"></a> [uptime\_check\_period](#input\_uptime\_check\_period) | How often, in seconds, the uptime check is performed. Currently, the only supported values are 60s (1 minute), 300s (5 minutes), 600s (10 minutes), and 900s (15 minutes). Defaults to 300s. | `string` | `"60s"` | no |
-| <a name="input_uptime_check_regions"></a> [uptime\_check\_regions](#input\_uptime\_check\_regions) | The list of regions from which the check will be run. Some regions contain one location, and others contain more than one. If this field is specified, enough regions to include a minimum of 3 locations must be provided, or an error message is returned. Not specifying this field will result in uptime checks running from all regions. | `list(string)` | <pre>[<br>  "ASIA_PACIFIC",<br> "EUROPE",<br>  "SOUTH_AMERICA"<br>]</pre> | no |
+| <a name="input_uptime_check_regions"></a> [uptime\_check\_regions](#input\_uptime\_check\_regions) | The list of regions from which the check will be run. Some regions contain one location, and others contain more than one. If this field is specified, enough regions to include a minimum of 3 locations must be provided, or an error message is returned. Not specifying this field will result in uptime checks running from all regions. | `list(string)` | <pre>[<br>  "SOUTH_AMERICA",<br>  "EUROPE",<br>  "ASIA_PACIFIC"<br>]</pre> | no |
 | <a name="input_uptime_check_timeout"></a> [uptime\_check\_timeout](#input\_uptime\_check\_timeout) | The maximum amount of time to wait for the request to complete (must be between 1 and 60 seconds). | `string` | `"10s"` | no |
 | <a name="input_uptime_monitoring_display_name"></a> [uptime\_monitoring\_display\_name](#input\_uptime\_monitoring\_display\_name) | A human-friendly name for the uptime check configuration. Used for monitoring display\_name. | `string` | `""` | no |
 | <a name="input_uptime_monitoring_host"></a> [uptime\_monitoring\_host](#input\_uptime\_monitoring\_host) | A hostname to monitor (without protocol, example: 'www.my-site.com'). | `string` | n/a | yes |
@@ -42,11 +43,13 @@ This module is provided without any kind of warranty and is GPL3 licensed.
 |------|-------------|
 | <a name="output_alert_policy_name"></a> [alert\_policy\_name](#output\_alert\_policy\_name) | n/a |
 | <a name="output_http_uptime_monitoring_name"></a> [http\_uptime\_monitoring\_name](#output\_http\_uptime\_monitoring\_name) | n/a |
+| <a name="output_ssl_alert_policy_names"></a> [ssl\_alert\_policy\_names](#output\_ssl\_alert\_policy\_names) | n/a |
 ## Resources
 
 | Name | Type |
 |------|------|
 | [google_monitoring_alert_policy.failure_alert](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/monitoring_alert_policy) | resource |
+| [google_monitoring_alert_policy.ssl_expiring_days](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/monitoring_alert_policy) | resource |
 | [google_monitoring_uptime_check_config.https_uptime](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/monitoring_uptime_check_config) | resource |
 ## Modules
 

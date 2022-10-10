@@ -61,7 +61,7 @@ resource "google_monitoring_uptime_check_config" "https_uptime" {
   }
 
   monitored_resource {
-    type   = "uptime_url"
+    type = "uptime_url"
     labels = {
       project_id = var.gcp_project
       host       = var.uptime_monitoring_host
@@ -73,4 +73,41 @@ resource "google_monitoring_uptime_check_config" "https_uptime" {
   lifecycle {
     create_before_destroy = true
   }
+}
+
+# ----------------------------
+# SSL expiration alert policy
+# ----------------------------
+resource "google_monitoring_alert_policy" "ssl_expiring_days" {
+  for_each = toset([for days in var.ssl_alert_threshold_days : tostring(days)])
+
+  display_name = "SSL certificate expiring soon (${each.value} days)"
+  combiner     = "OR"
+  conditions {
+    condition_threshold {
+      filter          = "metric.type=\"monitoring.googleapis.com/uptime_check/time_until_ssl_cert_expires\" AND resource.type=\"uptime_url\""
+      comparison      = "COMPARISON_LT"
+      threshold_value = each.value
+      duration        = "600s"
+      trigger {
+        count = 1
+      }
+      aggregations {
+        alignment_period     = "1200s"
+        per_series_aligner   = "ALIGN_NEXT_OLDER"
+        cross_series_reducer = "REDUCE_MEAN"
+        group_by_fields = [
+          "resource.label.*"
+        ]
+      }
+    }
+    display_name = "SSL certificate expiring soon (${each.value} days)"
+  }
+
+  user_labels = {
+    version = "1"
+    uptime  = "ssl_cert_expiration"
+  }
+
+  notification_channels = var.alert_notification_channels
 }

@@ -7,4 +7,7 @@ tfsec:
 	docker run --rm -it -v "$$(pwd):/src" aquasec/tfsec /src --tfvars-file=/src/examples/test.tfvars
 
 generate-docs: lint
-	terraform-docs markdown table --config .terraform-docs.yml --output-file README.md --output-mode inject .
+	docker run --rm -u $$(id -u) \
+		--volume "$(PWD):/terraform-docs" \
+		-w /terraform-docs \
+		quay.io/terraform-docs/terraform-docs:0.16.0 markdown table --config .terraform-docs.yml --output-file README.md --output-mode inject .
