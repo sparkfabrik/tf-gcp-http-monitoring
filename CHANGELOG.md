@@ -5,11 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2022-10-10
+
+- Add SSL expiration alert policy feature.
+
 ## [0.5.2] - 2022-10-05
 
 ### Changed
 
-- Se default locations in ASIA_PACIFIC, EUROPE, and SOUTH_AMERICA since each include 1 region. USA include 3 regions, and we want to stay with the [minimum of 3 regions  distributed globally](https://cloud.google.com/stackdriver/pricing#pricing_examples_uptime).
+- Se default locations in ASIA_PACIFIC, EUROPE, and SOUTH_AMERICA since each include 1 region. USA include 3 regions, and we want to stay with the [minimum of 3 regions distributed globally](https://cloud.google.com/stackdriver/pricing#pricing_examples_uptime).
 
 ## [0.5.1] - 2022-10-04
 
