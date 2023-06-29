@@ -35,14 +35,14 @@ resource "google_monitoring_notification_channel" "dev_support_email" {
 }
 
 module "gcp-http-monitoring" {
-  source  = "sparkfabrik/gcp-http-monitoring/sparkfabrik"
-  version = "~>0.3"
-  for_each = toset(local.hosts_list)
-  uptime_monitoring_host = each.value
-  gcp_project = local.gcp_project
-  alert_threshold_duration = "300s"
+  source                      = "sparkfabrik/gcp-http-monitoring/sparkfabrik"
+  version                     = "~>0.3"
+  for_each                    = toset(local.hosts_list)
+  uptime_monitoring_host      = each.value
+  gcp_project                 = local.gcp_project
+  alert_threshold_duration    = "300s"
   alert_notification_channels = local.notification_channels
-  uptime_monitoring_path = var.monitoring_path
-  auth_username = var.basic_auth_user
-  auth_password = var.basic_auth_password
+  uptime_monitoring_path      = var.monitoring_path
+  auth_username               = var.basic_auth_user
+  auth_password               = var.basic_auth_password
 }
