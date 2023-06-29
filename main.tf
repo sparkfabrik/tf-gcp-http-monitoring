@@ -3,13 +3,14 @@
 # ------
 locals {
   uptime_monitoring_display_name = var.uptime_monitoring_display_name != "" ? var.uptime_monitoring_display_name : var.uptime_monitoring_host
+  exist_path                     = var.uptime_monitoring_path != "" || var.uptime_monitoring_path != "/" ? false : true
 }
 
 # -------------
 # Alerts policy
 # -------------
 resource "google_monitoring_alert_policy" "failure_alert" {
-  display_name = "${local.uptime_monitoring_display_name} - Uptime failure"
+  display_name = local.exist_path ? "Failure of uptime check for: ${local.uptime_monitoring_display_name} - Path: ${var.uptime_monitoring_path}" : "Failure of uptime check for: ${local.uptime_monitoring_display_name}"
   combiner     = "OR"
 
   conditions {
