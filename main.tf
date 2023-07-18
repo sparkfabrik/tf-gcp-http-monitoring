@@ -2,7 +2,8 @@
 # LOCALS
 # ------
 locals {
-  uptime_monitoring_display_name = var.uptime_monitoring_display_name != "" ? "${var.uptime_monitoring_display_name} - ${var.uptime_monitoring_host}${var.uptime_monitoring_path}" : "${var.uptime_monitoring_host}${var.uptime_monitoring_path}"
+  suffix                         = var.uptime_monitoring_path != "/" ? var.uptime_monitoring_path : ""
+  uptime_monitoring_display_name = var.uptime_monitoring_display_name != "" ? "${var.uptime_monitoring_display_name} - ${var.uptime_monitoring_host}${local.suffix}" : "${var.uptime_monitoring_host}${local.suffix}"
 }
 
 # -------------
