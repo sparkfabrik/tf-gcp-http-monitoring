@@ -84,3 +84,15 @@ variable "ssl_alert_user_labels" {
   description = "This field is intended to be used for labelling the SSL alerts. Labels and values can contain only lowercase letters, numerals, underscores, and dashes. Keys must begin with a letter."
   default     = {}
 }
+
+variable "accepted_response_status_values" {
+  description = "Check will only pass if the HTTP response status code is in this set of status values (combined with the set of status classes)."
+  type        = set(number)
+  default     = []
+}
+
+variable "accepted_response_status_classes" {
+  description = "Check will only pass if the HTTP response status code is in this set of status classes (combined with the set of status values). Possible values: STATUS_CLASS_1XX, STATUS_CLASS_2XX, STATUS_CLASS_3XX, STATUS_CLASS_4XX, STATUS_CLASS_5XX, STATUS_CLASS_ANY"
+  type        = set(string)
+  default     = []
+}

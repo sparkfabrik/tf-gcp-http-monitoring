@@ -61,6 +61,22 @@ resource "google_monitoring_uptime_check_config" "https_uptime" {
         password = var.auth_password
       }
     }
+
+    dynamic "accepted_response_status_codes" {
+      for_each = var.accepted_response_status_values
+
+      content {
+        status_value = accepted_response_status_codes.value
+      }
+    }
+
+    dynamic "accepted_response_status_codes" {
+      for_each = var.accepted_response_status_classes
+
+      content {
+        status_class = accepted_response_status_codes.value
+      }
+    }
   }
 
   monitored_resource {

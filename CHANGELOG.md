@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2023-08-24
+
+[Compare with previous version](https://github.com/sparkfabrik/terraform-sparkfabrik-gcp-http-monitoring/compare/0.7.1...0.8.0)
+
+- Add response status code and response status classes
+
 ## [0.7.1] - 2023-07-18
 
 [Compare with previous version](https://github.com/sparkfabrik/terraform-sparkfabrik-gcp-http-monitoring/compare/0.7.0...0.7.1)
