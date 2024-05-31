@@ -6,6 +6,88 @@ locals {
   uptime_monitoring_display_name = var.uptime_monitoring_display_name != "" ? "${var.uptime_monitoring_display_name} - ${var.uptime_monitoring_host}${local.suffix}" : "${var.uptime_monitoring_host}${local.suffix}"
 }
 
+# Fetch information from Kubernetes secret if they are needed
+data "kubernetes_secret_v1" "basic_auth" {
+  count = var.auth_k8s_secret_basic_auth != null ? 1 : 0
+
+  metadata {
+    name      = var.auth_k8s_secret_basic_auth.name
+    namespace = var.auth_k8s_secret_basic_auth.namespace
+  }
+}
+
+# Fetch information from Kubernetes configmap if they are needed
+data "kubernetes_config_map_v1" "basic_auth" {
+  count = var.auth_k8s_configmap != null ? 1 : 0
+
+  metadata {
+    name      = var.auth_k8s_configmap.name
+    namespace = var.auth_k8s_configmap.namespace
+  }
+}
+
+locals {
+  secret_username    = length(data.kubernetes_secret_v1.basic_auth) == 1 ? lookup(data.kubernetes_secret_v1.basic_auth[0].data, var.auth_k8s_secret_basic_auth.username_key, "") : ""
+  secret_password    = length(data.kubernetes_secret_v1.basic_auth) == 1 ? lookup(data.kubernetes_secret_v1.basic_auth[0].data, var.auth_k8s_secret_basic_auth.password_key, "") : ""
+  configmap_username = length(data.kubernetes_config_map_v1.basic_auth) == 1 ? lookup(data.kubernetes_config_map_v1.basic_auth[0].data, var.auth_k8s_configmap.username_key, "") : ""
+  configmap_password = length(data.kubernetes_config_map_v1.basic_auth) == 1 ? lookup(data.kubernetes_config_map_v1.basic_auth[0].data, var.auth_k8s_configmap.password_key, "") : ""
+
+  final_username = try(coalesce(var.auth_username, local.secret_username, local.configmap_username), "")
+  final_password = try(coalesce(var.auth_password, local.secret_password, local.configmap_password), "")
+}
+
+resource "google_monitoring_uptime_check_config" "https_uptime" {
+  display_name     = local.uptime_monitoring_display_name
+  timeout          = var.uptime_check_timeout
+  period           = var.uptime_check_period
+  selected_regions = var.uptime_check_regions
+
+  http_check {
+    path         = var.uptime_monitoring_path
+    port         = "443"
+    use_ssl      = true
+    validate_ssl = true
+
+    dynamic "auth_info" {
+      for_each = (length(local.final_username) > 0 && length(local.final_password) > 0) ? [1] : []
+      content {
+        username = local.final_username
+        password = local.final_password
+      }
+    }
+
+    dynamic "accepted_response_status_codes" {
+      for_each = var.accepted_response_status_values
+
+      content {
+        status_value = accepted_response_status_codes.value
+      }
+    }
+
+    dynamic "accepted_response_status_codes" {
+      for_each = var.accepted_response_status_classes
+
+      content {
+        status_class = accepted_response_status_codes.value
+      }
+    }
+  }
+
+  monitored_resource {
+    type = "uptime_url"
+    labels = {
+      project_id = var.gcp_project
+      host       = var.uptime_monitoring_host
+    }
+  }
+
+  project = var.gcp_project
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
 # -------------
 # Alerts policy
 # -------------
@@ -40,58 +122,6 @@ resource "google_monitoring_alert_policy" "failure_alert" {
   depends_on = [
     google_monitoring_uptime_check_config.https_uptime
   ]
-}
-
-resource "google_monitoring_uptime_check_config" "https_uptime" {
-  display_name     = local.uptime_monitoring_display_name
-  timeout          = var.uptime_check_timeout
-  period           = var.uptime_check_period
-  selected_regions = var.uptime_check_regions
-
-  http_check {
-    path         = var.uptime_monitoring_path
-    port         = "443"
-    use_ssl      = true
-    validate_ssl = true
-
-    dynamic "auth_info" {
-      for_each = (length(var.auth_username) > 0 && length(var.auth_password) > 0) ? [1] : []
-      content {
-        username = var.auth_username
-        password = var.auth_password
-      }
-    }
-
-    dynamic "accepted_response_status_codes" {
-      for_each = var.accepted_response_status_values
-
-      content {
-        status_value = accepted_response_status_codes.value
-      }
-    }
-
-    dynamic "accepted_response_status_codes" {
-      for_each = var.accepted_response_status_classes
-
-      content {
-        status_class = accepted_response_status_codes.value
-      }
-    }
-  }
-
-  monitored_resource {
-    type = "uptime_url"
-    labels = {
-      project_id = var.gcp_project
-      host       = var.uptime_monitoring_host
-    }
-  }
-
-  project = var.gcp_project
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 # ----------------------------
