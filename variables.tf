@@ -73,6 +73,28 @@ variable "auth_password" {
   default     = ""
 }
 
+variable "auth_k8s_secret_basic_auth" {
+  type = object({
+    name         = string
+    namespace    = string
+    username_key = optional(string, "username")
+    password_key = optional(string, "password")
+  })
+  description = "If your application is behind a basic auth, here you can specify the name of the Kubernetes secret that contains the basic auth credentials. If you do not specify the `username_key` and `password_key`, the secret must contains the `username` and `password` keys as defined in the `kubernetes.io/basic-auth` type (https://kubernetes.io/docs/concepts/configuration/secret/#basic-authentication-secret)."
+  default     = null
+}
+
+variable "auth_k8s_configmap" {
+  type = object({
+    name         = string
+    namespace    = string
+    username_key = string
+    password_key = string
+  })
+  description = "If your application is behind a basic auth, here you can specify the name of the Kubernetes configmap that contains the credentials. You have to specify the keys for the username and password."
+  default     = null
+}
+
 variable "ssl_alert_threshold_days" {
   type        = list(number)
   description = "If you configure this list with some numeric values, the module creates alerts for SSL certificate expiration. The values of the list will be used as threshold value in days for the alert."
