@@ -43,6 +43,7 @@ This module is provided without any kind of warranty and is GPL3 licensed.
 | <a name="input_uptime_check_regions"></a> [uptime\_check\_regions](#input\_uptime\_check\_regions) | The list of regions from which the check will be run. Some regions contain one location, and others contain more than one. If this field is specified, enough regions to include a minimum of 3 locations must be provided, or an error message is returned. Not specifying this field will result in uptime checks running from all regions. | `list(string)` | <pre>[<br>  "USA_VIRGINIA",<br>  "EUROPE",<br>  "ASIA_PACIFIC"<br>]</pre> | no |
 | <a name="input_uptime_check_timeout"></a> [uptime\_check\_timeout](#input\_uptime\_check\_timeout) | The maximum amount of time to wait for the request to complete (must be between 1 and 60 seconds). | `string` | `"10s"` | no |
 | <a name="input_uptime_monitoring_display_name"></a> [uptime\_monitoring\_display\_name](#input\_uptime\_monitoring\_display\_name) | A human-friendly name for the uptime check configuration. Used for monitoring display\_name. | `string` | `""` | no |
+| <a name="input_uptime_monitoring_headers"></a> [uptime\_monitoring\_headers](#input\_uptime\_monitoring\_headers) | A set of key/value header pairs to send in the HTTP request to the URL. | `map(string)` | `{}` | no |
 | <a name="input_uptime_monitoring_host"></a> [uptime\_monitoring\_host](#input\_uptime\_monitoring\_host) | A hostname to monitor (without protocol, example: 'www.my-site.com'). | `string` | n/a | yes |
 | <a name="input_uptime_monitoring_path"></a> [uptime\_monitoring\_path](#input\_uptime\_monitoring\_path) | The path to the page to run the check against. | `string` | `"/"` | no |
 ## Outputs
@@ -64,5 +65,4 @@ This module is provided without any kind of warranty and is GPL3 licensed.
 ## Modules
 
 No modules.
-
 <!-- END_TF_DOCS -->
