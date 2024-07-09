@@ -47,6 +47,7 @@ resource "google_monitoring_uptime_check_config" "https_uptime" {
     port         = "443"
     use_ssl      = true
     validate_ssl = true
+    headers      = var.uptime_monitoring_headers
 
     dynamic "auth_info" {
       for_each = (length(local.final_username) > 0 && length(local.final_password) > 0) ? [1] : []

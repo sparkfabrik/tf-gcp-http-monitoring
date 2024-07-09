@@ -56,6 +56,12 @@ variable "uptime_alert_user_labels" {
   default     = {}
 }
 
+variable "uptime_monitoring_headers" {
+  type        = map(string)
+  description = "A set of key/value header pairs to send in the HTTP request to the URL."
+  default     = {}
+}
+
 variable "alert_notification_channels" {
   type        = list(string)
   description = "Identifies the notification channels to which notifications should be sent when incidents are opened or closed. The syntax of the entries in this field is projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]"
